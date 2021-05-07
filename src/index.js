@@ -21,37 +21,51 @@ console.log(data);
 // Challenge
 // You might have noticed there's a plus button at the beginning of the top row. Add the behaviour to it. When clicked, it should replace the main card with a form to add a new dog to the list. 
 // You'll find a template for the form on the HTML page. Once the form is submitted, add the new dog to the beginning of the list, right next to the plus button.
-
+let listOfDogs = document.querySelector(`.dogs-list`)
+let  mainDogSection = document.querySelector(".main__dog-section")
 
 // ADDING THE DOG NAMES IN THE MENU
 
-function addDogList(dogName) {
-let listOfDogs = document.querySelector(`.dogs-list`)
+// One Dog
+function addDogList(dog) {
 let listOfDogsLi = document.createElement('li')
 let listOfDogsButton = document.createElement('button')
 listOfDogsButton.setAttribute("class", "dogs-list__button")
-listOfDogsButton.innerText= dogName
+listOfDogsButton.innerText= dog.name
 
 listOfDogsLi.append(listOfDogsButton)
 listOfDogs.append(listOfDogsLi)
 
-}
-for (let object of data) {
-    addDogList(object.name)
+listOfDogsButton.addEventListener("click", function() {
+    mainDogSection.innerHTML = ""
+    displayDogCard(dog)
+})
 }
 
+
+// All Dogs
+function addDogsList(dogs){
+    for (const dog of dogs) {
+        addDogList(dog);
+    }
+    }
+
+    addDogsList(data)
+
+
+// MAIN CARD
 
 //     SECTION class="main__dog-section"
-let mainDogSection = document.querySelector(".main__dog-section")
 
-function displayDogCard() {
+function displayDogCard(dog) {
 //     NAME
-let h2Dog = document.createElement(h2Card)
-h2Dog.innerText= dogName
+let h2Dog = document.createElement("h2")
+h2Dog.innerText= dog.name
 //     IMAGE
 let imgDog = document.createElement("img")
-imgDog.setAttribute("src",)
-imgDog.setAttribute("alt", Dog Images)
+imgDog.setAttribute("src", dog.image)
+imgDog.setAttribute("alt", "")
+imgDog.setAttribute("width", "400px")
 
 //    DIV class="main__dog-section__desc">
 let dogDesc = document.createElement("div")
@@ -61,22 +75,36 @@ let bioDog = document.createElement("h3")
 bioDog.innerText = "BIO"
 //       P> BIO TEXT
 let bioTextDog = document.createElement("p")
-bioTextDog.innerText = dogBio
+bioTextDog.innerText = dog.bio
 // 
 //       DIV
-let divEl = document.createElement("div")
+let divButtonEl = document.createElement("div")
 //       DIV BTN
 let dogBtn = document.createElement("div")
 dogBtn.setAttribute("class", "main__dog-section__btn")
-//     <p><em>Is naughty?</em> yes!</p>
-let questionDog = document.createElement("p")
+//     <p>Is naughty? yes!</p>
+let naughtyDog = document.createElement("p")
+
+let naughtyEmDog = document.createElement("em")
+naughtyEmDog.innerText = "Is it naughty?"
+// naughtyDog.innerText = (`Is it naughty? ${eachDog.isGoodDog}`)
+naughtyDog.append(naughtyEmDog, !dog.isGoodDog ? " yes!" : " no!")
 
 
 //       BAD OR GOOD DOG
 let dogButton = document.createElement("button")
-dogButton.innerText= Good or bad dog
-//     <button>Good dog!</button>
-//   </div>
-//   </section>  
+dogButton.innerText= (!dog.isGoodDog? "Good Dog!" : "Bad Dog")
+
+
+dogDesc.append(bioDog, bioTextDog)
+divButtonEl.append(dogBtn, naughtyDog, dogButton)
+mainDogSection.append(h2Dog, imgDog, dogDesc,divButtonEl)
+
+dogButton.addEventListener("click", function() {
+    mainDogSection.innerHTML = ""
+    dog.isGoodDog=!dog.isGoodDog
+    displayDogCard(dog)
+})
 }
+
 
